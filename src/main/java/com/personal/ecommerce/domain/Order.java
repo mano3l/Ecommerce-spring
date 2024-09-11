@@ -1,25 +1,37 @@
 package com.personal.ecommerce.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.sql.Date;
 import java.util.UUID;
 
 @Entity
+@Table(name = "order")
 public class Order {
 
     @Id
-    @GeneratedValue
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false)
+    private UUID ID;
+
+    @NotNull
+    @Column(name = "date", nullable = false)
     private Date date;
+
+    @NotNull
+    @Column(name = "status", nullable = false)
     private String status;
-    private Double total_amount;
+
+    @NotNull
+    @Column(name = "total_amount", nullable = false)
+    private Double totalAmount;
 
     @OneToOne
     private Payment payment;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
 }

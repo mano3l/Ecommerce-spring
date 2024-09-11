@@ -1,21 +1,29 @@
 package com.personal.ecommerce.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Table(name = "category")
 public class Category {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false)
     private UUID ID;
-    private String Name;
-    private String Description;
+
+    @NotNull
+    @Size(max = 50)
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Size(max = 255)
+    @Column(name = "description")
+    private String description;
 
     @OneToMany(mappedBy = "category")
     private List<Product> products;
