@@ -15,7 +15,7 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
-    private UUID ID;
+    private UUID id;
 
     @NotNull
     @Size(max = 50)
@@ -44,6 +44,6 @@ public class Customer {
     private String address;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<Payment> payment;
+    private List<Order> order;
 
 }

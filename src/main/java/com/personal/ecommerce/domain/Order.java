@@ -7,13 +7,13 @@ import java.sql.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
-    private UUID ID;
+    private UUID id;
 
     @NotNull
     @Column(name = "date", nullable = false)
