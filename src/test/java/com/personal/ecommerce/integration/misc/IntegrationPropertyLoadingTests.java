@@ -1,5 +1,7 @@
-package com.personal.ecommerce;
+package com.personal.ecommerce.integration.misc;
 
+import com.personal.ecommerce.TestCategory;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -7,6 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Tag(TestCategory.INTEGRATION_TEST)
 @SpringBootTest
 @ActiveProfiles("integration")
 public class IntegrationPropertyLoadingTests {

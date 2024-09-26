@@ -1,5 +1,6 @@
-package com.personal.ecommerce.controller;
+package com.personal.ecommerce.integration.controller;
 
+import com.personal.ecommerce.TestCategory;
 import com.personal.ecommerce.domain.Category;
 import com.personal.ecommerce.domain.Product;
 import com.personal.ecommerce.dto.ProductDto;
@@ -8,6 +9,7 @@ import com.personal.ecommerce.repository.ProductRepository;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.when;
 
+@Tag(TestCategory.INTEGRATION_TEST)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("integration")
 public class ProductControllerIntegrationTests {

@@ -65,3 +65,15 @@ dependencies {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+tasks.register<Test>("integrationTests") {
+    useJUnitPlatform {
+        includeTags("IntegrationTest")
+    }
+}
+
+tasks.register<Test>("unitTests") {
+    useJUnitPlatform {
+        includeTags("UnitTest")
+    }
+}

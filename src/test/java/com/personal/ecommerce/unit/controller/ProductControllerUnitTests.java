@@ -1,5 +1,7 @@
-package com.personal.ecommerce.controller;
+package com.personal.ecommerce.unit.controller;
 
+import com.personal.ecommerce.TestCategory;
+import com.personal.ecommerce.controller.ProductController;
 import com.personal.ecommerce.domain.Category;
 import com.personal.ecommerce.domain.Product;
 import com.personal.ecommerce.dto.ProductDto;
@@ -8,6 +10,8 @@ import com.personal.ecommerce.service.ProductService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -20,6 +24,7 @@ import java.util.UUID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@Tag(TestCategory.UNIT_TEST)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("unit")
 public class ProductControllerUnitTests {
@@ -61,7 +66,6 @@ public class ProductControllerUnitTests {
                 .build();
 
         ProductDto productDto = ProductMapper.INSTANCE.toDto(product);
-
         // When
         when(productService.getProduct(any(UUID.class))).thenReturn(productDto);
 
@@ -73,3 +77,4 @@ public class ProductControllerUnitTests {
                 .statusCode(200);
     }
 }
+
