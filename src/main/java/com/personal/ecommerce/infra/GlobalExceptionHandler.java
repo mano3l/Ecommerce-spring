@@ -1,19 +1,25 @@
 package com.personal.ecommerce.infra;
 
-import org.springframework.http.HttpHeaders;
+import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
+
+import java.util.HashMap;
+import java.util.List;
 
 @ControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler {
 
-    @ExceptionHandler({IllegalArgumentException.class})
-    protected ResponseEntity<ApiError> handleIllegalArgumentException(IllegalArgumentException ex) {
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage());
-        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<ApiError> handleValidationExceptions(HandlerMethodValidationException ex) {
+        List<String> errors = ex.getAllErrors().stream().map(MessageSourceResolvable::getDefaultMessage).toList();
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Validation Error", errors);
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
 }
