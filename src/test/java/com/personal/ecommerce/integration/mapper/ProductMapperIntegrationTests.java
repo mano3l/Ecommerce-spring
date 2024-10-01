@@ -13,7 +13,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag(TestCategory.INTEGRATION_TEST)
-public class ProductMapperTests {
+public class ProductMapperIntegrationTests {
 
     @Test
     void shouldMapProductsToProductDto() {

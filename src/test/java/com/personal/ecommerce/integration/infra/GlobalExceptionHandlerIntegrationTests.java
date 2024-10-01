@@ -13,15 +13,13 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.List;
-
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.when;
 import static org.hamcrest.Matchers.equalTo;
 
 @Tag(TestCategory.INTEGRATION_TEST)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("integration")
-public class GlobalExceptionHandlerTests {
+public class GlobalExceptionHandlerIntegrationTests {
 
     @LocalServerPort
     private int port;
@@ -48,6 +46,16 @@ public class GlobalExceptionHandlerTests {
                 .statusCode(400)
                 .body("status", equalTo("BAD_REQUEST"))
                 .body("message", equalTo("Validation Error"))
-                .body("errors", Matchers.instanceOf(Iterable.class)).log().all();
+                .body("errors", Matchers.instanceOf(Iterable.class));
+    }
+
+    @Test
+    public void whenProductNotFound_thenReturnsProductNotFoundError() throws Exception {
+        when().get(uri + "/api/product/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4b1e")
+                .then()
+                .statusCode(404)
+                .body("status", equalTo("NOT_FOUND"))
+                .body("message", equalTo("Product Not Found"))
+                .body("errors", Matchers.instanceOf(Iterable.class));
     }
 }
