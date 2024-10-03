@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -40,6 +41,7 @@ public class GlobalExceptionHandlerIntegrationTests {
     }
 
     @Test
+    @WithMockUser(username = "user")
     public void whenInvalidUUID_thenReturnsValidationErrors() throws Exception {
         when().get(uri + "/api/product/invalid-uuid")
                 .then()
@@ -50,6 +52,7 @@ public class GlobalExceptionHandlerIntegrationTests {
     }
 
     @Test
+    @WithMockUser(username = "user")
     public void whenProductNotFound_thenReturnsProductNotFoundError() throws Exception {
         when().get(uri + "/api/product/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4b1e")
                 .then()
