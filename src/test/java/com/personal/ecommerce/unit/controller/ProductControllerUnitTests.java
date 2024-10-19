@@ -6,12 +6,11 @@ import com.personal.ecommerce.domain.Category;
 import com.personal.ecommerce.domain.Product;
 import com.personal.ecommerce.dto.ProductDto;
 import com.personal.ecommerce.mapper.ProductMapper;
-import com.personal.ecommerce.service.ProductService;
+import com.personal.ecommerce.service.ProductServiceImpl;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -36,11 +35,11 @@ public class ProductControllerUnitTests {
 
     @PostConstruct
     public void init() {
-        uri = "http://localhost:" + port;
+        uri = "http://localhost:" + port + "/api/v1";
     }
 
     @Mock
-    private ProductService productService;
+    private ProductServiceImpl productServiceImpl;
 
     @InjectMocks
     private ProductController productController;
@@ -67,14 +66,42 @@ public class ProductControllerUnitTests {
 
         ProductDto productDto = ProductMapper.INSTANCE.toDto(product);
         // When
-        when(productService.getProduct(any(UUID.class))).thenReturn(productDto);
+        when(productServiceImpl.getProduct(any(UUID.class))).thenReturn(productDto);
 
         // Then
         RestAssuredMockMvc.given()
                 .when()
-                .get(uri + "/api/product/" + product.getId())
+                .get(uri + "/product/" + product.getId())
                 .then()
                 .statusCode(200);
     }
+
+    @Test
+    void productsByCategoryShouldReturnProducts() throws Exception {
+
+        // Given
+        Category category = Category.builder()
+                .id(UUID.randomUUID())
+                .name("Category 1")
+                .build();
+
+        Product product = Product.builder()
+                .id(UUID.randomUUID())
+                .name("Product 1")
+                .category(category)
+                .build();
+
+        ProductDto productDto = ProductMapper.INSTANCE.toDto(product);
+        // When
+        when(productServiceImpl.getProductsPageByCategory(any(String.class), any())).thenReturn(null);
+
+        // Then
+        RestAssuredMockMvc.given()
+                .when()
+                .get(uri + "/products/" + category.getName())
+                .then()
+                .statusCode(200);
+    }
+
 }
 

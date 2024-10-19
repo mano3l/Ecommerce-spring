@@ -32,7 +32,7 @@ public class GlobalExceptionHandlerIntegrationTests {
 
     @PostConstruct
     public void init() {
-        uri = "http://localhost:" + port;
+        uri = "http://localhost:" + port + "/api/v1";
     }
 
     @BeforeEach
@@ -43,7 +43,7 @@ public class GlobalExceptionHandlerIntegrationTests {
     @Test
     @WithMockUser(username = "user")
     public void whenInvalidUUID_thenReturnsValidationErrors() throws Exception {
-        when().get(uri + "/api/product/invalid-uuid")
+        when().get(uri + "/product/invalid-uuid")
                 .then()
                 .statusCode(400)
                 .body("status", equalTo("BAD_REQUEST"))
@@ -54,7 +54,7 @@ public class GlobalExceptionHandlerIntegrationTests {
     @Test
     @WithMockUser(username = "user")
     public void whenProductNotFound_thenReturnsProductNotFoundError() throws Exception {
-        when().get(uri + "/api/product/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4b1e")
+        when().get(uri + "/product/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4b1e")
                 .then()
                 .statusCode(404)
                 .body("status", equalTo("NOT_FOUND"))

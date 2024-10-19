@@ -67,5 +67,3 @@ public class SecurityConfig {
         return roles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role)).collect(Collectors.toList());
     }
 }
-
-

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.data.domain.Page;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.context.WebApplicationContext;
@@ -35,7 +36,7 @@ public class ProductControllerIntegrationTests {
 
     @PostConstruct
     public void init() {
-        uri = "http://localhost:" + port;
+        uri = "http://localhost:" + port + "/api/v1";
     }
 
     @BeforeEach
@@ -44,6 +45,7 @@ public class ProductControllerIntegrationTests {
     }
 
     @Test
+    @WithMockUser
     void productShouldReturnProduct() throws Exception {
 
         // Given
@@ -64,11 +66,38 @@ public class ProductControllerIntegrationTests {
         productRepository.save(product);
 
         // When
-        when().get(uri + "/api/product/" + product.getId())
+        when().get(uri + "/product/" + product.getId())
                 .then()
                 .statusCode(200)
                 .extract()
                 .as(ProductDto.class);
+    }
+
+    @Test
+    @WithMockUser
+    void productsByCategoryShouldReturnProducts() throws Exception {
+
+        // Given
+        ProductRepository productRepository = webApplicationContext.getBean(ProductRepository.class);
+        CategoryRepository categoryRepository = webApplicationContext.getBean(CategoryRepository.class);
+
+        Category category = Category.builder()
+                .name("Category 1")
+                .build();
+        categoryRepository.save(category);
+
+        Product product = Product.builder()
+                .name("Product 1")
+                .price(10.0)
+                .stockQuantity(10)
+                .category(category)
+                .build();
+        productRepository.save(product);
+
+        // When
+        when().get(uri + "/products/" + category.getName())
+                .then()
+                .statusCode(200);
     }
 
 }
