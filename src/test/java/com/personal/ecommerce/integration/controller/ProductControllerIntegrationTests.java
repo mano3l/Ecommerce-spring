@@ -71,6 +71,9 @@ public class ProductControllerIntegrationTests {
                 .statusCode(200)
                 .extract()
                 .as(ProductDto.class);
+
+        productRepository.delete(product);
+        categoryRepository.delete(category);
     }
 
     @Test
@@ -98,6 +101,9 @@ public class ProductControllerIntegrationTests {
         when().get(uri + "/products/" + category.getName())
                 .then()
                 .statusCode(200);
+
+        productRepository.delete(product);
+        categoryRepository.delete(category);
     }
 
 }

@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 buildscript {
     dependencies {
         classpath("org.postgresql:postgresql:42.7.4")
@@ -65,18 +68,36 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+fun loadEnvProperties(fileName: String): Properties {
+    val properties = Properties()
+    FileInputStream(fileName).use { properties.load(it) }
+    return properties
+}
+
 tasks.withType<Test> {
     useJUnitPlatform()
+    val envProperties = loadEnvProperties("test.env")
+    envProperties["KC_CLIENTID"]?.let { environment("KC_CLIENTID", it) }
+    envProperties["KC_SECRET"]?.let { environment("KC_SECRET", it) }
+    envProperties["KC_ISSUERURI"]?.let { environment("KC_ISSUERURI", it) }
 }
 
 tasks.register<Test>("integrationTests") {
     useJUnitPlatform {
         includeTags("IntegrationTest")
     }
+    val envProperties = loadEnvProperties("test.env")
+    envProperties["KC_CLIENTID"]?.let { environment("KC_CLIENTID", it) }
+    envProperties["KC_SECRET"]?.let { environment("KC_SECRET", it) }
+    envProperties["KC_ISSUERURI"]?.let { environment("KC_ISSUERURI", it) }
 }
 
 tasks.register<Test>("unitTests") {
     useJUnitPlatform {
         includeTags("UnitTest")
     }
+    val envProperties = loadEnvProperties("test.env")
+    envProperties["KC_CLIENTID"]?.let { environment("KC_CLIENTID", it) }
+    envProperties["KC_SECRET"]?.let { environment("KC_SECRET", it) }
+    envProperties["KC_ISSUERURI"]?.let { environment("KC_ISSUERURI", it) }
 }

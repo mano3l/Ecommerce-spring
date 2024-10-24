@@ -61,4 +61,15 @@ public class GlobalExceptionHandlerIntegrationTests {
                 .body("message", equalTo("Product Not Found"))
                 .body("errors", Matchers.instanceOf(Iterable.class));
     }
+
+    @Test
+    @WithMockUser(username = "user")
+    public void whenCategoryNotFound_thenReturnsCategoryNotFoundError() throws Exception {
+        when().get(uri + "/products/invalid-category")
+                .then()
+                .statusCode(404)
+                .body("status", equalTo("NOT_FOUND"))
+                .body("message", equalTo("Category Not Found"))
+                .body("errors", Matchers.instanceOf(Iterable.class));
+    }
 }

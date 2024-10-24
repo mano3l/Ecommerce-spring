@@ -39,3 +39,6 @@ out/
 
 ### Misc ###
 *.svg
+
+### Gradle ###
+test.env

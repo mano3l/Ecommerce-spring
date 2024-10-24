@@ -1,5 +1,6 @@
 package com.personal.ecommerce.infra;
 
+import com.personal.ecommerce.infra.exception.CategoryNotFoundException;
 import com.personal.ecommerce.infra.exception.ProductNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSourceResolvable;
@@ -31,6 +32,22 @@ public class GlobalExceptionHandler {
         ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "Product Not Found", List.of(ex.getMessage()));
         log.error("Product not found", ex);
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<ApiError> handleCategoryNotFoundException(CategoryNotFoundException ex) {
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "Category Not Found", List.of(ex.getMessage()));
+        log.error("Category not found", ex);
+        return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiError> handleException(Exception ex) {
+        ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", List.of(ex.getMessage()));
+        log.error("Internal server error", ex);
+        return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
