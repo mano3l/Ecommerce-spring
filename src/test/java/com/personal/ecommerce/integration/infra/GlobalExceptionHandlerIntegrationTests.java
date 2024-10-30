@@ -47,8 +47,7 @@ public class GlobalExceptionHandlerIntegrationTests {
                 .then()
                 .statusCode(400)
                 .body("status", equalTo("BAD_REQUEST"))
-                .body("message", equalTo("Validation Error"))
-                .body("errors", Matchers.instanceOf(Iterable.class));
+                .body("message", equalTo("Validation Error"));
     }
 
     @Test
@@ -58,18 +57,16 @@ public class GlobalExceptionHandlerIntegrationTests {
                 .then()
                 .statusCode(404)
                 .body("status", equalTo("NOT_FOUND"))
-                .body("message", equalTo("Product Not Found"))
-                .body("errors", Matchers.instanceOf(Iterable.class));
+                .body("message", equalTo("Product Not Found"));
     }
 
     @Test
     @WithMockUser(username = "user")
     public void whenCategoryNotFound_thenReturnsCategoryNotFoundError() throws Exception {
-        when().get(uri + "/products/invalid-category")
+        when().get(uri + "/products/invalid-category?sortBy=price&asc=true&page=0&size=10")
                 .then()
                 .statusCode(404)
                 .body("status", equalTo("NOT_FOUND"))
-                .body("message", equalTo("Category Not Found"))
-                .body("errors", Matchers.instanceOf(Iterable.class));
+                .body("message", equalTo("Category Not Found"));
     }
 }

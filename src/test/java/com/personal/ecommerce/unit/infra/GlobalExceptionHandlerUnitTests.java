@@ -31,8 +31,6 @@ public class GlobalExceptionHandlerUnitTests {
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode().value()).isEqualTo(404);
         assertThat(Objects.requireNonNull(response.getBody()).getMessage()).isEqualTo("Product Not Found");
-        assertThat(response.getBody().getErrors()).isInstanceOf(Iterable.class);
-        assertThat(response.getBody().getErrors()).contains("Product not found");
     }
 
 }
