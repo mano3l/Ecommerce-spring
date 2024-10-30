@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -39,4 +40,16 @@ public class Category {
     @JsonIgnore
     private List<Product> products;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return Objects.equals(id, category.id) && Objects.equals(name, category.name) && Objects.equals(description, category.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description);
+    }
 }
